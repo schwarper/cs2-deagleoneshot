@@ -13,15 +13,10 @@ public class DeagleOneShotConfig : BasePluginConfig
 public class DeagleOneShot : BasePlugin, IPluginConfig<DeagleOneShotConfig>
 {
     public override string ModuleName => "Deagle One Shot";
-    public override string ModuleVersion => "0.0.3";
+    public override string ModuleVersion => "0.0.4";
     public override string ModuleAuthor => "schwarper";
 
     public DeagleOneShotConfig Config { get; set; } = new DeagleOneShotConfig();
-
-    public void OnConfigParsed(DeagleOneShotConfig config)
-    {
-        Config = config;
-    }
 
     public override void Load(bool hotReload)
     {
@@ -41,6 +36,11 @@ public class DeagleOneShot : BasePlugin, IPluginConfig<DeagleOneShotConfig>
         }
     }
 
+    public void OnConfigParsed(DeagleOneShotConfig config)
+    {
+        Config = config;
+    }
+
     public HookResult OnWeaponFire(EventWeaponFire @event, GameEventInfo info)
     {
         if (@event.Weapon != "weapon_deagle")
@@ -48,9 +48,9 @@ public class DeagleOneShot : BasePlugin, IPluginConfig<DeagleOneShotConfig>
             return HookResult.Continue;
         }
 
-        CCSPlayerController player = @event.Userid;
+        CCSPlayerController? player = @event.Userid;
 
-        if (player == null || !player.IsValid)
+        if (player == null)
         {
             return HookResult.Continue;
         }
